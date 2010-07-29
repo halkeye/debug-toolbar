@@ -14,7 +14,10 @@ class DebugToolbar
 	 * @return string debug toolbar rendered output
 	 */
 	public static function render($print = false)
-	{
+	{	
+		if (!self::is_enabled())
+			return;
+
 		$token = Profiler::start('custom', self::$benchmark_name);
 
 		$template = new View('toolbar');
@@ -80,7 +83,7 @@ class DebugToolbar
 			$template->set('benchmarks', self::get_benchmarks());
 		}
 
-		if ($output = Request::instance()->response and self::is_enabled())
+		if ($output = Request::instance()->response)
 		{
 			// Try to add css just before the </head> tag
 			if (stripos($output, '</head>') !== FALSE)
@@ -349,13 +352,8 @@ class DebugToolbar
 
 		// Auto render if secret key isset
 		$secret_key = Kohana::config('debug_toolbar.secret_key');
-		if ($secret_key !== FALSE and isset($_GET[$secret_key]))
-			return TRUE;
-
-		// Don't auto render when IN_PRODUCTION (this can obviously be
-		// overridden by the above secret key)
-		if (IN_PRODUCTION)
-			return FALSE;
+		if ($secret_key !== FALSE)
+			return isset($_GET[$secret_key]);
 
 		return TRUE;
 	}
