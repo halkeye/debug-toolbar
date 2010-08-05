@@ -17,8 +17,9 @@
 	
 		<!-- Kohana link -->
 		<?php echo html::image(
-			Kohana::config('debug_toolbar.icon_path').'/kohana.png',
-			array('onclick' => 'debugToolbar.collapse()')
+			'static/img/kohana.png',
+			array('onclick' => 'debugToolbar.collapse()'),
+            TRUE
 		) ?>
 		
 		<!-- Kohana icon -->
@@ -37,12 +38,12 @@
 			<?php if (Kohana::config('debug_toolbar.panels.benchmarks')): ?>
 				<!-- Time -->
 				<li id="time" onclick="debugToolbar.show('debug-benchmarks'); return false;">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/time.png', array('alt' => 'time')) ?>
+					<?php echo html::image('static/img/time.png', array('alt' => 'time'), TRUE) ?>
 					<?php echo round(($benchmarks['application']['total_time'])*1000, 2) ?> ms
 				</li>
 				<!-- Memory -->
 				<li id="memory" onclick="debugToolbar.show('debug-benchmarks'); return false;">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/memory.png', array('alt' => 'memory')) ?>
+					<?php echo html::image('static/img/memory.png', array('alt' => 'memory'), TRUE) ?>
 					<?php echo text::bytes($benchmarks['application']['total_memory']) ?>
 				</li>
 			<?php endif ?>
@@ -50,7 +51,7 @@
 			<!-- Queries -->
 			<?php if (Kohana::config('debug_toolbar.panels.database')): ?>
 				<li id="toggle-database" onclick="debugToolbar.show('debug-database'); return false;">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/database.png', array('alt' => 'queries')) ?>
+					<?php echo html::image('static/img/database.png', array('alt' => 'queries'), TRUE) ?>
 					<?php echo isset($queries) ? $query_count : 0 ?>
 				</li>
 			<?php endif ?>
@@ -58,7 +59,7 @@
 			<!-- Vars -->
 			<?php if (Kohana::config('debug_toolbar.panels.vars')): ?>
 				<li id="toggle-vars" onclick="debugToolbar.show('debug-vars'); return false;">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/config.png', array('alt' => 'vars')) ?>
+					<?php echo html::image('static/img/config.png', array('alt' => 'vars'), TRUE) ?>
 					vars
 				</li>
 			<?php endif ?>
@@ -66,7 +67,7 @@
 			<!-- Ajax -->
 			<?php if (Kohana::config('debug_toolbar.panels.ajax')): ?>
 				<li id="toggle-ajax" onclick="debugToolbar.show('debug-ajax'); return false;" style="display: none">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/ajax.png', array('alt' => 'ajax')) ?>
+					<?php echo html::image('static/img/ajax.png', array('alt' => 'ajax'), TRUE) ?>
 					ajax (<span>0</span>)
 				</li>
 			<?php endif ?>
@@ -74,7 +75,7 @@
 			<!-- Files -->
 			<?php if (Kohana::config('debug_toolbar.panels.files')): ?>
 				<li id="toggle-files" onclick="debugToolbar.show('debug-files'); return false;">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/page_copy.png', array('alt' => 'files')) ?>
+					<?php echo html::image('static/img/page_copy.png', array('alt' => 'files'), TRUE) ?>
 					files
 				</li>
 			<?php endif ?>
@@ -82,7 +83,7 @@
 			<!-- Modules -->
 			<?php if (Kohana::config('debug_toolbar.panels.modules')): ?>
 				<li id="toggle-modules" onclick="debugToolbar.show('debug-modules'); return false;">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/module.png', array('alt' => 'modules')) ?>
+					<?php echo html::image('static/img/module.png', array('alt' => 'modules'), TRUE) ?>
 					modules
 				</li>
 			<?php endif ?>
@@ -90,19 +91,19 @@
 			<!-- Routes -->
 			<?php if (Kohana::config('debug_toolbar.panels.routes')): ?>
 				<li id="toggle-routes" onclick="debugToolbar.show('debug-routes'); return false;">
-					<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/route.png', array('alt' => 'routes')) ?>
+					<?php echo html::image('static/img/route.png', array('alt' => 'routes'), TRUE) ?>
 					routes
 				</li>
 			<?php endif ?>
 
 			<!-- Swap sides -->
 			<li onclick="debugToolbar.swap(); return false;">
-				<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/text_align_left.png', array('alt' => 'align')) ?>
+				<?php echo html::image('static/img/text_align_left.png', array('alt' => 'align'), TRUE) ?>
 			</li>
 			
 			<!-- Close -->
 			<li class="last" onclick="debugToolbar.close(); return false;">
-				<?php echo html::image(Kohana::config('debug_toolbar.icon_path').'/close.png', array('alt' => 'close')) ?>
+				<?php echo html::image('static/img/close.png', array('alt' => 'close'), TRUE) ?>
 			</li>
 		</ul>
 	</div>

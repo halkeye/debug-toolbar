@@ -12,12 +12,6 @@ $config['auto_render'] = FALSE;
  */
 $config['minimized'] = FALSE;
 
-/* 
- * Location of icon images
- * relative to your site_domain
- */
-$config['icon_path'] = 'images';
-
 /*
  * Log toolbar data to FirePHP
  */

@@ -122,6 +122,9 @@ class DebugToolbar
 	 */
 	public static function get_queries()
 	{
+        if (!class_exists('Database'))
+            return array('count' => 0, 'time' => 0, 'memory' => 0, 'data' => array());
+
 		if (self::$_queries !== FALSE)
 		{
 			return self::$_queries;
