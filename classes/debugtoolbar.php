@@ -4,6 +4,7 @@ class DebugToolbar
 {
 	protected static $_queries = FALSE;
 	protected static $_benchmarks = FALSE;
+	protected static $_custom_tabs = array();
 
 	public static $benchmark_name = 'debug_toolbar';
 
@@ -14,10 +15,7 @@ class DebugToolbar
 	 * @return string debug toolbar rendered output
 	 */
 	public static function render($print = false)
-	{	
-		if (!self::is_enabled())
-			return;
-
+	{
 		$token = Profiler::start('custom', self::$benchmark_name);
 
 		$template = new View('toolbar');
@@ -49,6 +47,12 @@ class DebugToolbar
 		if (Kohana::config('debug_toolbar.panels.routes') === TRUE)
 		{
 			$template->set('routes', self::get_routes());
+		}
+
+		// Custom data
+		if (Kohana::config('debug_toolbar.panels.customs') === TRUE)
+		{
+			$template->set('customs', self::get_customs());
 		}
 
 		// FirePHP
@@ -83,7 +87,7 @@ class DebugToolbar
 			$template->set('benchmarks', self::get_benchmarks());
 		}
 
-		if ($output = Request::instance()->response)
+		if ($output = Request::$current->response() and self::is_enabled())
 		{
 			// Try to add css just before the </head> tag
 			if (stripos($output, '</head>') !== FALSE)
@@ -118,13 +122,46 @@ class DebugToolbar
 	}
 
 	/**
+	 * Adds custom data to render in a separate tab
+	 *
+	 * @param  string $tab_name
+	 * @param  mixed  $data
+	 * @return void
+	 */
+	public static function add_custom($tab_name, $data)
+	{
+		self::$_custom_tabs[$tab_name] = $data;
+	}
+
+	/**
+	 * Get user vars
+	 *
+	 * @return array
+	 */
+	public static function get_customs()
+	{
+		$result = array();
+
+		foreach(self::$_custom_tabs as $tab => $data)
+		{			
+			if (is_array($data) OR is_object($data))
+			{
+				$data = Kohana::dump($data);
+			}
+
+			$result[$tab] = $data;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Retrieves query benchmarks from Database
+	 *
+	 * @return  array
 	 */
 	public static function get_queries()
 	{
-        if (!class_exists('Database'))
-            return array('count' => 0, 'time' => 0, 'memory' => 0, 'data' => array());
-
 		if (self::$_queries !== FALSE)
 		{
 			return self::$_queries;
@@ -140,7 +177,7 @@ class DebugToolbar
 			$group = arr::get($groups, $group_name, FALSE);
 
 			if ($group)
-			{					
+			{
 				$sub_time = $sub_memory = $sub_count = 0;
 				foreach ($group as $query => $tokens)
 				{
@@ -150,7 +187,7 @@ class DebugToolbar
 						$total = Profiler::total($token);
 						$sub_time += $total[0];
 						$sub_memory += $total[1];
-						$result[$name][] = array('name' => $query, 'time' => $total[0], 'memory' => $total[1]);
+						$result[$name][] = array('name' => $query, 'time' => $total[0], 'memory' => $total[1], 'line' => @$total[2], 'file' => @$total[3]);
 					}
 				}
 				$count += $sub_count;
@@ -232,6 +269,7 @@ class DebugToolbar
 	}
 
 	/**
+	 * Get module list
 	 *
 	 * @return array  module_name => module_path
 	 */
@@ -240,6 +278,11 @@ class DebugToolbar
 		return Kohana::modules();
 	}
 
+	/**
+	 * Returns all application routes
+	 *
+	 * @return array
+	 */
 	public static function get_routes()
 	{
 		return Route::all();
@@ -342,7 +385,7 @@ class DebugToolbar
 	public static function is_enabled()
 	{
 		// Don't auto render toolbar for ajax requests
-		if (Request::$is_ajax)
+		if (Request::$current->is_ajax())
 			return FALSE;
 
 		// Don't auto render toolbar if $_GET['debug'] = 'false'
@@ -355,8 +398,13 @@ class DebugToolbar
 
 		// Auto render if secret key isset
 		$secret_key = Kohana::config('debug_toolbar.secret_key');
-		if ($secret_key !== FALSE)
-			return isset($_GET[$secret_key]);
+		if ($secret_key !== FALSE and isset($_GET[$secret_key]))
+			return TRUE;
+
+		// Don't auto render when IN_PRODUCTION (this can obviously be
+		// overridden by the above secret key)
+		if (IN_PRODUCTION)
+			return FALSE;
 
 		return TRUE;
 	}

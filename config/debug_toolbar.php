@@ -12,6 +12,12 @@ $config['auto_render'] = FALSE;
  */
 $config['minimized'] = FALSE;
 
+/* 
+ * Location of icon images
+ * relative to your site_domain
+ */
+$config['icon_path'] = 'modules/debug-toolbar/images';
+
 /*
  * Log toolbar data to FirePHP
  */
@@ -28,6 +34,7 @@ $config['panels'] = array(
 	'files'				=> TRUE,
 	'modules'			=> TRUE,
 	'routes'			=> TRUE,
+	'customs'           => TRUE,
 );
 
 /*

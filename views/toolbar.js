@@ -9,6 +9,9 @@ var debugToolbar = {
 	// current config section open
 	currentli: null,
 	
+	// toggle state 
+	currentstate : 'visible',
+	
 	// toggle a toolbar section
 	show : function(obj) {
 		if (obj == debugToolbar.current) {
@@ -76,10 +79,54 @@ var debugToolbar = {
 		}
 	},
 	
+	getElementsByClassName : function(className, elm, tag){
+		var testClass = new RegExp("(^|\\s)" + className + "(\\s|$)");
+		var tag = tag || "*";
+		var elm = elm || document;
+		var elements = (tag == "*" && elm.all)? elm.all : elm.getElementsByTagName(tag);
+		var returnElements = [];
+		for(var i=0, length = elements.length; i<length; i++){
+			if(testClass.test(elements[i].className)){
+				returnElements.push(elements[i]);
+			}
+		}
+		return returnElements;
+	},
+	
+	toggleByClass : function(className){
+		var cont = document.getElementById('debug-toolbar-blocks');
+		var debug = debugToolbar.getElementsByClassName(className,cont,'div');
+		for (var i=0, ln = debug.length; i < ln; i++){
+			if (debugToolbar.currentstate === 'hidden' && debug[i].getAttribute('id') == debugToolbar.current){
+				debug[i].style.display = '';
+			}else{
+				debug[i].style.display = 'none';
+			}
+		}
+		
+		debugToolbar.currentstate = (debugToolbar.currentstate === 'visible') ? 'hidden' : 'visible';
+	},
+	
 	collapse: function() {
 		debugToolbar.toggle('debug-toolbar-menu');
+		debugToolbar.toggleByClass('top');
+	},
+	toggleClass : function(obj,className){
+		if (obj.className.indexOf(className)< 0){
+			obj.className += ' '+className;
+		}else{
+			var eReg = new RegExp("(^|\\s)"+className+"(\\s|$)");
+			obj.className = obj.className.replace(eReg,'');
+		}
+	},
+	toggleNext : function(elm,tag,className){
+		debugToolbar.toggleClass(elm,'less');
+		elm.innerHTML = (elm.innerHTML=='more')? 'less' : 'more';  
+		var elements = debugToolbar.getElementsByClassName(className,elm.parentNode,tag);
+		for(var i=0, length = elements.length; i<length; i++){
+			debugToolbar.toggleClass(elements[i],'hide');
+		}
 	}
-
 };
 
 /*
@@ -114,9 +161,5 @@ if (typeof jQuery != 'undefined') {
 			
 		});
 	});
-}
-	
-if (typeof Prototype != 'undefined') {
-
 }
 	

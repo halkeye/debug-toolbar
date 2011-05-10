@@ -19,6 +19,7 @@
 		<?php echo html::image(
 			'static/img/kohana.png',
 			array('onclick' => 'debugToolbar.collapse()'),
+            NULL,
             TRUE
 		) ?>
 		
@@ -38,12 +39,12 @@
 			<?php if (Kohana::config('debug_toolbar.panels.benchmarks')): ?>
 				<!-- Time -->
 				<li id="time" onclick="debugToolbar.show('debug-benchmarks'); return false;">
-					<?php echo html::image('static/img/time.png', array('alt' => 'time'), TRUE) ?>
+					<?php echo html::image('static/img/time.png', array('alt' => 'time'), NULL, TRUE) ?>
 					<?php echo round(($benchmarks['application']['total_time'])*1000, 2) ?> ms
 				</li>
 				<!-- Memory -->
 				<li id="memory" onclick="debugToolbar.show('debug-benchmarks'); return false;">
-					<?php echo html::image('static/img/memory.png', array('alt' => 'memory'), TRUE) ?>
+					<?php echo html::image('static/img/memory.png', array('alt' => 'memory'), NULL, TRUE) ?>
 					<?php echo text::bytes($benchmarks['application']['total_memory']) ?>
 				</li>
 			<?php endif ?>
@@ -51,7 +52,7 @@
 			<!-- Queries -->
 			<?php if (Kohana::config('debug_toolbar.panels.database')): ?>
 				<li id="toggle-database" onclick="debugToolbar.show('debug-database'); return false;">
-					<?php echo html::image('static/img/database.png', array('alt' => 'queries'), TRUE) ?>
+					<?php echo html::image('static/img/database.png', array('alt' => 'queries'), NULL, TRUE) ?>
 					<?php echo isset($queries) ? $query_count : 0 ?>
 				</li>
 			<?php endif ?>
@@ -59,7 +60,7 @@
 			<!-- Vars -->
 			<?php if (Kohana::config('debug_toolbar.panels.vars')): ?>
 				<li id="toggle-vars" onclick="debugToolbar.show('debug-vars'); return false;">
-					<?php echo html::image('static/img/config.png', array('alt' => 'vars'), TRUE) ?>
+					<?php echo html::image('static/img/config.png', array('alt' => 'vars'), NULL, TRUE) ?>
 					vars
 				</li>
 			<?php endif ?>
@@ -67,7 +68,7 @@
 			<!-- Ajax -->
 			<?php if (Kohana::config('debug_toolbar.panels.ajax')): ?>
 				<li id="toggle-ajax" onclick="debugToolbar.show('debug-ajax'); return false;" style="display: none">
-					<?php echo html::image('static/img/ajax.png', array('alt' => 'ajax'), TRUE) ?>
+					<?php echo html::image('static/img/ajax.png', array('alt' => 'ajax'), NULL, TRUE) ?>
 					ajax (<span>0</span>)
 				</li>
 			<?php endif ?>
@@ -75,7 +76,7 @@
 			<!-- Files -->
 			<?php if (Kohana::config('debug_toolbar.panels.files')): ?>
 				<li id="toggle-files" onclick="debugToolbar.show('debug-files'); return false;">
-					<?php echo html::image('static/img/page_copy.png', array('alt' => 'files'), TRUE) ?>
+					<?php echo html::image('static/img/page_copy.png', array('alt' => 'files'), NULL, TRUE) ?>
 					files
 				</li>
 			<?php endif ?>
@@ -83,7 +84,7 @@
 			<!-- Modules -->
 			<?php if (Kohana::config('debug_toolbar.panels.modules')): ?>
 				<li id="toggle-modules" onclick="debugToolbar.show('debug-modules'); return false;">
-					<?php echo html::image('static/img/module.png', array('alt' => 'modules'), TRUE) ?>
+					<?php echo html::image('static/img/module.png', array('alt' => 'modules'), NULL, TRUE) ?>
 					modules
 				</li>
 			<?php endif ?>
@@ -91,19 +92,19 @@
 			<!-- Routes -->
 			<?php if (Kohana::config('debug_toolbar.panels.routes')): ?>
 				<li id="toggle-routes" onclick="debugToolbar.show('debug-routes'); return false;">
-					<?php echo html::image('static/img/route.png', array('alt' => 'routes'), TRUE) ?>
+					<?php echo html::image('static/img/route.png', array('alt' => 'routes'), NULL, TRUE) ?>
 					routes
 				</li>
 			<?php endif ?>
 
 			<!-- Swap sides -->
 			<li onclick="debugToolbar.swap(); return false;">
-				<?php echo html::image('static/img/text_align_left.png', array('alt' => 'align'), TRUE) ?>
+				<?php echo html::image('static/img/text_align_left.png', array('alt' => 'align'), NULL, TRUE) ?>
 			</li>
 			
 			<!-- Close -->
 			<li class="last" onclick="debugToolbar.close(); return false;">
-				<?php echo html::image('static/img/close.png', array('alt' => 'close'), TRUE) ?>
+				<?php echo html::image('static/img/close.png', array('alt' => 'close'), NULL, TRUE) ?>
 			</li>
 		</ul>
 	</div>
@@ -209,22 +210,22 @@
 				<li onclick="debugToolbar.showvar(this, 'vars-session'); return false;">SESSION</li>
 			</ul>
 			<div style="display: none;" id="vars-post">
-				<?php echo isset($_POST) ? Kohana::debug($_POST) : Kohana::debug(array()) ?>
+				<?php echo isset($_POST) ? var_export($_POST) : var_export(array()) ?>
 			</div>
 			<div style="display: none;" id="vars-get">
-				<?php echo isset($_GET) ? Kohana::debug($_GET) : Kohana::debug(array()) ?>
+				<?php echo isset($_GET) ? var_export($_GET) : var_export(array()) ?>
 			</div>
 			<div style="display: none;" id="vars-files">
-				<?php echo isset($_FILES) ? Kohana::debug($_FILES) : Kohana::debug(array()) ?>
+				<?php echo isset($_FILES) ? var_export($_FILES) : var_export(array()) ?>
 			</div>
 			<div style="display: none;" id="vars-server">
-				<?php echo isset($_SERVER) ? Kohana::debug($_SERVER) : Kohana::debug(array()) ?>
+				<?php echo isset($_SERVER) ? var_export($_SERVER) : var_export(array()) ?>
 			</div>
 			<div style="display: none;" id="vars-cookie">
-				<?php echo isset($_COOKIE) ? Kohana::debug($_COOKIE) : Kohana::debug(array()) ?>
+				<?php echo isset($_COOKIE) ? var_export($_COOKIE) : var_export(array()) ?>
 			</div>
 			<div style="display: none;" id="vars-session">
-				<?php echo isset($_SESSION) ? Kohana::debug($_SESSION) : Kohana::debug(array()) ?>
+				<?php echo isset($_SESSION) ? var_export($_SESSION) : var_export(array()) ?>
 			</div>
 		</div>
 	<?php endif ?>
@@ -316,7 +317,7 @@
 					<th>name</th>
 				</tr>
 				<?php foreach($routes as $name => $route):
-						$class = ($route == Request::instance()->route ? ' current' : ''); ?>
+						$class = ($route == Request::$current->route() ? ' current' : ''); ?>
 				<tr class="<?php echo text::alternate('odd','even').$class?>">
 					<td><?php echo ++$r_counter ?></td>
 					<td><?php echo $name ?></td>

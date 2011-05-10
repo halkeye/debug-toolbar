@@ -123,11 +123,15 @@ div#kohana-debug-toolbar div#debug-toolbar ul.menu {
 }
 div#kohana-debug-toolbar div#debug-toolbar ul.menu li {
 	display: inline;
-  list-style: none;
-  padding: 0 5px;
-  border-right: 1px solid #aaa;
+	float: left;
+	list-style: none;
+	padding: 0 5px;
+	border-right: 1px solid #aaa;
 	cursor: pointer;
 	line-height: 16px;
+}
+div#kohana-debug-toolbar img#debug-toolbar-logo {
+	float: left;
 }
 div#kohana-debug-toolbar div#debug-toolbar ul.menu li.last { 
 	border: none;
@@ -138,6 +142,9 @@ div#kohana-debug-toolbar div#debug-benchmarks { padding: 3px 0px; }
 
 /* SQL queries */
 div#kohana-debug-toolbar div#debug-database { padding: 3px 0px; }
+div#kohana-debug-toolbar div#debug-database hide {display: none;}
+div#kohana-debug-toolbar div#debug-database span.more {cursor: pointer; color: green;}
+div#kohana-debug-toolbar div#debug-database span.less {cursor: pointer; color: red;}
 
 /* Vars & Config */
 div#kohana-debug-toolbar div#debug-vars {
@@ -192,4 +199,33 @@ div#kohana-debug-toolbar div#debug-ajax {
 	padding: 3px 0px;
 	font-size: 11px;
 }
+
+/* Custom data */
+div#kohana-debug-toolbar div#debug-customs {
+	padding: 3px 0px;
+}
+div#kohana-debug-toolbar div#debug-customs pre {
+	background-color: #ddd;
+	padding: 5px;
+	color: #333;
+}
+div#kohana-debug-toolbar div#debug-customs .sectionmenu {
+  margin: 20px 0 0 0;
+	height: 23px;
+}
+div#kohana-debug-toolbar div#debug-customs .sectionmenu li {
+	float: left;
+	display: block;
+	padding: 5px;
+	margin: 0 6px 0 0;
+	border-top: 1px solid #999;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+	cursor:  pointer;
+}
+div#kohana-debug-toolbar div#debug-customs .sectionmenu li.active {
+	background-color: #ddd;
+	color: #000;
+}
+
 </style>
